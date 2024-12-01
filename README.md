@@ -34,8 +34,8 @@ Add the `bin` folder to your system's PATH:
 Clone this repository to your local machine:
 
 ```sh
-git clone https://github.com/yourusername/discord-music-bot.git
-cd discord-music-bot
+git clone https://github.com/yourusername/rock-lion.git
+cd rock-lion
 ```
 ### 4. Create a .env File
 Create a .env file in the root directory of the project and add your Discord bot token:
