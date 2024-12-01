@@ -39,6 +39,9 @@ cd rock-lion
 ```
 ### 4. Create a .env File
 Create a .env file in the root directory of the project and add your Discord bot token:
+```
+TOKEN=your_discord_bot_token
+```
 
 ### 5. Install Dependencies
 
@@ -59,8 +62,8 @@ Setting Up a Discord Bot:
 - Copy the generated URL and use it to invite the bot to your server.
 
 Commands:
-
--play <song>: Play a song or add it to the queue.
+```
+-play <song>: Play a song or add it to the queue (also supports playlists).
 
 -pause: Pause the current song.
 
@@ -75,7 +78,7 @@ Commands:
 -queue: Show how many songs are in the queue
 
 -shuffle: Shuffle the queue
-
+```
 **Important Note**
 
 Please be aware that using this bot to play music from YouTube may violate YouTube's terms of service. Discord has enforced stricter policies regarding bots that play music from YouTube, and popular music bots have been shut down as a result. Use this bot responsibly and consider using other sources for music or exploring alternatives that have proper licensing agreements.
