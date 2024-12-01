@@ -12,13 +12,13 @@ This is a Discord music bot that can play, pause, resume, skip, shuffle, and sto
 
 ### 1. Install Python
 
-Download and install Python from the official website: https://www.python.org/downloads/
+Download and install Python from the official [website](https://www.python.org/downloads/).
 
 Make sure to add Python to your system's PATH during the installation.
 
 ### 2. Install `ffmpeg`
 
-Download `ffmpeg` from the official [website](https://ffmpeg.org/download.html)
+Download `ffmpeg` from the official [website](https://ffmpeg.org/download.html).
 
 After downloading, extract the zip file to a folder, e.g., `C:\ffmpeg`.
 
