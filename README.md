@@ -4,7 +4,7 @@ This is a Discord music bot that can play, pause, resume, skip, shuffle, and sto
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.8 or higher (NOT Python 3.13, it currently misses the audioop module, so it won't work)
 - `ffmpeg` installed and added to your system's PATH
 - A Discord bot token
 
