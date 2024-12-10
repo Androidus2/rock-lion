@@ -10,6 +10,9 @@ class music_cog(commands.Cog):
         self.isPaused = False
         self.queue = []
         self.vc = None
+        self.loopMode = 0 # 0: No loop, 1: Loop current song, 2: Loop all songs in queue
+        self.lastSong = None
+        self.loopQueue = []
 
         self.FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
@@ -24,7 +27,12 @@ class music_cog(commands.Cog):
         """
         with YoutubeDL(self.YDL_OPTIONS) as ydl:
             try:
-                info = ydl.extract_info(f"ytsearch:{item}", download=False)['entries'][0]
+                print("SEARCHING FOR ::::::::::" + item)
+                if 'https://' in item or 'http://' in item:
+                    print("Extracting info from URL")
+                    info = ydl.extract_info(item, download=False)
+                else:
+                    info = ydl.extract_info(f"ytsearch:{item}", download=False)['entries'][0]
                 #print(f"Extracted info: {info}")
             except Exception as e:
                 print(f"Error extracting info: {e}")
@@ -52,6 +60,13 @@ class music_cog(commands.Cog):
         Play the next song in the queue
         """
         print("In PlayNext")
+
+        if self.loopMode == 1 and self.lastSong is not None:
+            self.queue.insert(0, self.lastSong)
+
+        if self.loopMode == 2 and len(self.loopQueue) == 0:
+            self.loopQueue = self.queue.copy()
+
         if len(self.queue) > 0:
             nextURL = self.queue[0]
             prepared = self.PrepareVideo(nextURL)
@@ -94,6 +109,8 @@ class music_cog(commands.Cog):
                 self.vc = await voice_channel.connect()
                 await ctx.send("Bot has joined the voice channel")
                 print("Bot has joined the voice channel")
+            
+            self.lastSong = nextURL
 
             self.vc.play(audio_source, after=after_callback)
             print("Audio playback started")
@@ -141,6 +158,10 @@ class music_cog(commands.Cog):
         
         print(f"Adding a song to the queue")
         self.queue += song
+
+        if self.loopMode == 2:
+            self.loopQueue += song.copy()
+
         if 'playlist' in item:
             print(f"Adding {len(song)} songs to the queue")
             await ctx.send(f"Added {len(song)} songs to the queue")
@@ -184,6 +205,9 @@ class music_cog(commands.Cog):
         """
         print("Skipping the song")
         if self.isPlaying:
+            if self.loopMode == 1:
+                self.lastSong = None
+
             self.vc.stop()
             await ctx.send("Skipping the song")
             #await self.PlayNext(ctx)
@@ -250,3 +274,21 @@ class music_cog(commands.Cog):
         import random
         random.shuffle(self.queue)
         await ctx.send("Shuffled the queue")
+
+    @commands.command(name='loop', help='Loop the current song or the queue')
+    async def Loop(self, ctx):
+        """
+        Loop the current song or the queue
+        """
+        print("Looping the current song or the queue")
+        if self.loopMode == 0:
+            self.loopMode = 1
+            await ctx.send("Looping the current song")
+        elif self.loopMode == 1:
+            self.loopQueue = self.queue.copy()
+            self.loopMode = 2
+            await ctx.send("Looping the queue")
+        else:
+            self.loopMode = 0
+            self.loopQueue = []
+            await ctx.send("No loop")
